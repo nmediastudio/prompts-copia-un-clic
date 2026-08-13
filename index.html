@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guía de prompts - Copia con un clic</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #3f0929;
+      --pink: #e91e73;
+      --pink-dark: #b81259;
+      --rose: #fff1f7;
+      --paper: #fffafb;
+      --line: #efbfd3;
+      --muted: #6e6269;
+      --white: #ffffff;
+      --ok: #16794a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #4a0830 0 330px, var(--paper) 330px);
+      color: #2d292c;
+    }
+    header, main, footer { width: min(1040px, calc(100% - 32px)); margin-inline: auto; }
+    header { color: var(--white); padding: 56px 0 44px; }
+    .kicker { margin: 0 0 8px; font-size: 13px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    h1 { margin: 0; max-width: 760px; font-size: clamp(34px, 6vw, 62px); line-height: 1.02; }
+    header p { max-width: 720px; margin: 18px 0 0; color: #ffe5f0; font-size: 18px; line-height: 1.55; }
+    .toolbar {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;
+      margin: 0 0 20px; padding: 18px 20px; background: var(--white); border: 1px solid var(--line);
+      border-radius: 18px; box-shadow: 0 12px 35px rgba(74, 8, 48, .1);
+    }
+    .toolbar strong { color: var(--ink); }
+    button {
+      appearance: none; border: 0; border-radius: 999px; padding: 11px 18px;
+      background: var(--pink); color: var(--white); font: inherit; font-weight: 800; cursor: pointer;
+      transition: transform .15s ease, background .15s ease;
+    }
+    button:hover { background: var(--pink-dark); transform: translateY(-1px); }
+    button:focus-visible { outline: 3px solid rgba(233, 30, 115, .28); outline-offset: 3px; }
+    button.copied { background: var(--ok); }
+    .prompt-card {
+      margin: 18px 0; overflow: hidden; background: var(--white); border: 1px solid var(--line);
+      border-radius: 18px; box-shadow: 0 8px 26px rgba(74, 8, 48, .07);
+    }
+    summary {
+      list-style: none; display: grid; grid-template-columns: 48px 1fr auto; gap: 14px; align-items: center;
+      padding: 20px; cursor: pointer; color: var(--ink);
+    }
+    summary::-webkit-details-marker { display: none; }
+    .number {
+      display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
+      background: var(--rose); color: var(--pink); font-weight: 900;
+    }
+    .title { display: block; font-size: 19px; font-weight: 850; line-height: 1.25; }
+    .meta { display: block; margin-top: 4px; color: var(--muted); font-size: 14px; }
+    .chevron { font-size: 24px; color: var(--pink); transition: transform .2s ease; }
+    details[open] .chevron { transform: rotate(180deg); }
+    .content { padding: 0 20px 22px; }
+    .copy-row { display: flex; justify-content: flex-end; margin: 0 0 10px; }
+    textarea {
+      display: block; width: 100%; min-height: 420px; resize: vertical; padding: 18px;
+      border: 1px solid #e4d4dc; border-radius: 14px; background: #fffdfd; color: #282326;
+      font: 15px/1.55 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+    }
+    textarea:focus { outline: 3px solid rgba(233, 30, 115, .16); border-color: var(--pink); }
+    footer { padding: 32px 0 48px; color: var(--muted); font-size: 14px; }
+    #status { min-height: 1.4em; color: var(--ok); font-weight: 750; }
+    @media (max-width: 620px) {
+      body { background: linear-gradient(180deg, #4a0830 0 320px, var(--paper) 320px); }
+      header { padding-top: 42px; }
+      summary { grid-template-columns: 44px 1fr; }
+      .chevron { display: none; }
+      .content { padding-inline: 14px; }
+      textarea { min-height: 520px; font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <p class="kicker">Guía en español</p>
+    <h1>Prompts listos para copiar</h1>
+    <p>Abre el prompt que necesitas y pulsa “Copiar prompt”. El texto completo quedará guardado en tu portapapeles.</p>
+  </header>
+
+  <main>
+    <div class="toolbar">
+      <div><strong>5 prompts completos</strong><br><span id="status" aria-live="polite"></span></div>
+      <button type="button" id="copy-all">Copiar todos</button>
+    </div>
+
+    <details class="prompt-card" open>
+      <summary>
+        <span class="number">01</span>
+        <span><span class="title">Separar una prenda de la modelo</span><span class="meta">Imagen de producto aislado</span></span>
+        <span class="chevron">⌄</span>
+      </summary>
+      <div class="content">
+        <div class="copy-row"><button type="button" data-copy="prompt-1">Copiar prompt</button></div>
+        <textarea id="prompt-1" readonly>Usa la imagen de referencia de la mujer con el conjunto únicamente para identificar y reconstruir la ropa con precisión.
+
+Genera una imagen ultrarrealista que muestre solo el producto, sin ninguna persona. Conserva exactamente el diseño, color, apariencia del tejido, forma, proporciones, corte, costuras, escote, tirantes, cintura, pespuntes y todos los detalles visibles.
+
+Presenta el conjunto completo en plano cenital sobre un fondo blanco o neutro muy claro. Si existen dos o más piezas, muéstralas completas, separadas y cercanas entre sí como un conjunto.
+
+El resultado debe parecer una fotografía real de comercio electrónico, con iluminación natural suave, sombras limpias, textura realista y gran nivel de detalle.
+
+NO INCLUIR: personas, rostros, piel, manos, brazos, maniquíes, prendas vestidas, piezas adicionales, cambios de diseño, colores inventados, texto promocional, decoración o fondos complejos.
+
+Objetivo final: una referencia de producto aislado, auténtica y lista para generar un video de demostración.</textarea>
+      </div>
+    </details>
+
+    <details class="prompt-card">
+      <summary>
+        <span class="number">02</span>
+        <span><span class="title">Video de unboxing ASMR</span><span class="meta">Producto sobre mesa clara</span></span>
+        <span class="chevron">⌄</span>
+      </summary>
+      <div class="content">
+        <div class="copy-row"><button type="button" data-copy="prompt-2">Copiar prompt</button></div>
+        <textarea id="prompt-2" readonly>Crea un video vertical 9:16 ultrafotorrealista basado estrictamente en la imagen de referencia del producto. Debe parecer una demostración viral grabada casualmente con un smartphone, no un anuncio generado por IA.
+
+CÁMARA Y ESCENA:
+Usa una cámara cenital casi estática sobre una mesa blanca mate o neutra muy clara. Permite únicamente micro movimientos naturales. No uses zoom, órbitas, ángulos dramáticos, desenfoque artificial ni movimientos cinematográficos. Nunca muestres el rostro o el cuerpo; solo dos manos y antebrazos femeninos entrando desde los bordes. Las manos deben ser anatómicamente correctas, con cinco dedos, textura natural, uñas nude o rosa pálido y apariencia constante.
+
+ILUMINACIÓN:
+Luz natural suave y difusa desde un lado, sombras realistas y exposición de smartphone. Sin neón, luces de color, contraste excesivo ni acabado comercial brillante.
+
+FIDELIDAD DEL PRODUCTO:
+Conserva exactamente forma, dimensiones, colores, materiales, textura, costuras, estampados, patrones, logotipos, etiquetas, cierres, botones, cremalleras, tirantes, accesorios, empaque, cantidad de piezas y detalles de construcción. No rediseñes, simplifiques, estilices ni inventes elementos.
+
+ACCIÓN:
+Comienza con el producto doblado dentro de una bolsa transparente sobre la mesa. Las manos abren el empaque con movimientos humanos creíbles; el plástico se arruga y refleja la luz con física realista. Extraen el producto gradualmente, apartan el empaque y despliegan cada pieza. Rotan, levantan, ajustan y reposicionan el producto para mostrar forma, tamaño, textura, costuras, bordes, cierres y componentes. Si el tejido es elástico, estíralo suavemente una sola vez y deja que recupere su forma. Termina con todas las piezas extendidas, alineadas y claramente visibles.
+
+MOVIMIENTO Y FÍSICA:
+Usa articulación natural de dedos, presión de agarre, rotación de muñeca, pausas, correcciones pequeñas y aceleración humana. Evita movimientos robóticos o demasiado perfectos. La tela debe doblarse, arrugarse, caer y asentarse correctamente. Nada puede flotar, teletransportarse, derretirse, atravesar las manos o cambiar de forma.
+
+EDICIÓN:
+Secuencia sugerida: empaque, apertura, extracción, despliegue, inspección, detalles, demostración del material y composición final. Se permiten cortes invisibles durante el movimiento. Sin fundidos, cuadros negros, transiciones llamativas, cámara lenta o aceleraciones artificiales.
+
+AUDIO:
+Sin música, voz en off ni diálogo. Usa sonidos ASMR sutiles y sincronizados: plástico arrugándose, apertura del empaque, tela desplegándose, roce textil, dedos sobre el material y producto sobre la mesa.
+
+RESTRICCIONES:
+No generar texto, subtítulos, precios, emojis, marcas de agua ni interfaz de TikTok. Sin dedos extra o faltantes, manos duplicadas, muñecas deformadas, objetos flotantes, cambios de color, detalles que desaparecen, logotipos cambiantes, física incorrecta, apariencia CGI o render 3D.</textarea>
+      </div>
+    </details>
+
+    <details class="prompt-card">
+      <summary>
+        <span class="number">03</span>
+        <span><span class="title">Separar tres prendas de las modelos</span><span class="meta">Referencia conjunta de catálogo</span></span>
+        <span class="chevron">⌄</span>
+      </summary>
+      <div class="content">
+        <div class="copy-row"><button type="button" data-copy="prompt-3">Copiar prompt</button></div>
+        <textarea id="prompt-3" readonly>Usa tres imágenes de referencia únicamente para identificar y reconstruir las prendas:
+- Referencia 1 = prenda A.
+- Referencia 2 = prenda B.
+- Referencia 3 = prenda C.
+
+Genera una única imagen ultrarrealista que muestre las tres prendas juntas, sin modelos ni partes del cuerpo.
+
+Muestra las tres prendas completas, de frente, claramente separadas y a una escala similar sobre fondo blanco puro. Utiliza una distribución limpia de catálogo o comercio electrónico, con espaciado equilibrado.
+
+Cada prenda debe reconstruirse exclusivamente desde su propia referencia. No mezcles detalles entre productos. Conserva silueta, corte, proporciones, mangas, escote, aberturas, costuras, pespuntes, textura, estructura, recortes, broches y todos los detalles especiales.
+
+ESTILO:
+Fotografía de producto realista, iluminación de estudio limpia o luz natural suave, sombras discretas y gran detalle. Las prendas deben parecer fotografiadas, no ilustraciones ni renders.
+
+NO MOSTRAR:
+Mujeres, rostros, cuerpos, piel, manos, brazos, maniquíes, perchas, muebles, empaques, escenarios, texto, leyendas, marcas de agua o logotipos que no formen parte física de las prendas.
+
+Objetivo final: una referencia única con las tres prendas, lista para generar el video de comparación.</textarea>
+      </div>
+    </details>
+
+    <details class="prompt-card">
+      <summary>
+        <span class="number">04</span>
+        <span><span class="title">Video de tres prendas sobre un sofá</span><span class="meta">Demostración con funk brasileño original</span></span>
+        <span class="chevron">⌄</span>
+      </summary>
+      <div class="content">
+        <div class="copy-row"><button type="button" data-copy="prompt-4">Copiar prompt</button></div>
+        <textarea id="prompt-4" readonly>Crea un video vertical 9:16 ultrafotorrealista usando las tres referencias de ropa como fuente absoluta de verdad. Debe parecer contenido auténtico grabado con smartphone por una creadora brasileña para TikTok o Reels, no CGI ni un anuncio tradicional.
+
+FIDELIDAD:
+Conserva exactamente diseño, color, corte, proporciones, escote, mangas, aberturas, cintura, cierres, costuras, textura, elasticidad, grosor y detalles visibles. No rediseñes, cambies colores, mezcles prendas ni añadas o elimines elementos.
+
+ESCENA:
+Usa un sofá modular grande, limpio y acolchado en beige suave o taupe claro. El sofá ocupa casi todo el encuadre. Sin almohadas, decoraciones ni accesorios. El entorno debe sentirse como un hogar real.
+
+CÁMARA Y PERSONA:
+Smartphone fijo o casi fijo por encima del sofá, desde un ángulo cenital ligeramente inclinado. Permite micro movimientos humanos y pequeños ajustes cuando una prenda se acerque a cámara. Nunca muestres rostro ni cuerpo completo; solo manos, muñecas y antebrazos. La mujer usa una blusa blanca holgada, uñas nude o rosa pálido y anillos dorados discretos. Mantén iguales manos, piel, uñas, blusa y joyas.
+
+INICIO:
+Comienza con el sofá vacío. La primera prenda entra desde un lado y cae naturalmente. La segunda entra desde otra dirección y cae junto a la primera; después entra la tercera. Las prendas deben doblarse, arrugarse, deslizarse y asentarse con física textil creíble. No pueden teletransportarse.
+
+DEMOSTRACIÓN:
+Organiza las tres prendas de forma casual y orgánica. Alterna la atención entre los productos: levantar, acercar, extender, girar, alisar, frotar el tejido y pellizcarlo suavemente. Muestra frente, espalda, mangas, escotes, aberturas, recortes, cintura, dobladillos, costuras, cierres y broches. La interacción debe sentirse espontánea.
+
+ELASTICIDAD Y DETALLES:
+Estira horizontalmente solo las zonas elásticas. El tejido debe tensarse y recuperar su forma sin deformar costuras. Acerca una prenda para mostrar trama, suavidad, brillo, pespuntes, bordes, elásticos, escote, recortes y cierres. Regresa frecuentemente a la vista conjunta de las tres prendas.
+
+RITMO:
+Sofá vacío, entrada de las prendas, vista conjunta, demostración de la prenda 1, detalle, regreso al sofá; repetir con prendas 2 y 3; comparación final. Usa cortes naturales durante el movimiento. Sin fundidos, cuadros negros, transiciones digitales, cámara lenta o aceleraciones artificiales.
+
+FÍSICA:
+Incluye rotación natural de muñeca, articulación de dedos, cambios de presión, pausas y correcciones pequeñas. La tela reacciona a gravedad, compresión, estiramiento, pliegues, arrugas, caída y roce con el tapizado. No permitas que las prendas floten, se derritan, se fusionen, atraviesen manos o sofá, cambien de tamaño o muten.
+
+ILUMINACIÓN:
+Luz natural brillante y difusa, balance de blancos neutro y sombras suaves. Conserva detalle en prendas claras y oscuras. Sin neón, luces de color o contraste cinematográfico excesivo.
+
+MÚSICA Y SONIDO:
+Genera una pista instrumental original inspirada en baile funk brasileño contemporáneo, con percusión contundente, bombo fuerte, ritmo sincopado, bajo enérgico y producción electrónica moderna. No imites canciones existentes ni uses letras, voz o diálogo. Mantén audibles los sonidos táctiles de tela cayendo, roce con el sofá, estiramiento y contacto de dedos.
+
+RESTRICCIONES:
+No generar texto, subtítulos, precios, emojis, etiquetas, interfaz de TikTok o marcas de agua. Sin dedos extra o faltantes, manos duplicadas, brazos deformados, uñas cambiantes, prendas duplicadas, ropa adicional, cambios de color, teletransporte, maniquíes, personas extra o aspecto CGI.</textarea>
+      </div>
+    </details>
+
+    <details class="prompt-card">
+      <summary>
+        <span class="number">05</span>
+        <span><span class="title">Carrusel de selfies en espejo</span><span class="meta">Misma mujer, tres looks y tres poses</span></span>
+        <span class="chevron">⌄</span>
+      </summary>
+      <div class="content">
+        <div class="copy-row"><button type="button" data-copy="prompt-5">Copiar prompt</button></div>
+        <textarea id="prompt-5" readonly>COMPLETA ANTES DE GENERAR:
+- EDAD: [debe ser 18 años o mayor].
+- COLOR DE CABELLO: [negro, castaño oscuro, rubio, etc.].
+- OTRAS CARACTERÍSTICAS: [cabello, piel, cuerpo, joyería y manicura].
+
+Usa las tres imágenes cargadas únicamente como referencias de vestuario:
+- Referencia 1 = look 1.
+- Referencia 2 = look 2.
+- Referencia 3 = look 3.
+
+Genera exactamente tres imágenes verticales 9:16 separadas. No crees un collage ni pongas los tres looks en una sola imagen.
+
+SALIDA:
+- Imagen 1: la misma mujer con el look 1.
+- Imagen 2: la misma mujer con el look 2.
+- Imagen 3: la misma mujer con el look 3.
+
+No copies la identidad, rostro, cuerpo, pose, teléfono o entorno de las modelos presentes en las referencias. Recrea solamente la ropa.
+
+IDENTIDAD:
+Crea una mujer brasileña adulta, claramente mayor de 18 años, ultrarrealista, atractiva, femenina y segura, con curvas naturales y anatomía proporcionada. Mantén exactamente el mismo rostro, cabello, color de cabello, piel, cuerpo, proporciones, manos, uñas, teléfono y apariencia general en las tres imágenes. No generes tres mujeres parecidas: debe ser inequívocamente la misma persona.
+
+ESTILO FOTOGRÁFICO:
+Selfies de cuerpo completo tomadas frente al mismo espejo, en el mismo apartamento y durante una sola sesión. El teléfono cubre una parte del rostro de forma natural, pero deja suficiente identidad visible. El resultado debe parecer contenido casual de una creadora brasileña para TikTok o Instagram, no una sesión de estudio, campaña de moda, CGI o render 3D.
+
+ENTORNO:
+Apartamento moderno y luminoso con espejo vertical grande de marco oscuro, ventana amplia a la izquierda, cortinas claras, luz natural suave, sofá beige, televisión montada en la pared, mesa redonda y sillas amarillas. Mantén idénticos el apartamento, muebles, espejo, dirección de la luz y composición del fondo.
+
+ENCUADRE:
+Formato vertical 9:16, de cabeza a pies. Las tres fotos deben parecer tomadas con pocos minutos de diferencia. Mantén casi iguales la altura de cámara, ángulo del espejo, iluminación, distancia y composición.
+
+POSES:
+Las tres imágenes deben mostrar poses diferentes y naturales.
+- Imagen 1: postura relajada, una pierna ligeramente adelantada y cuerpo casi de frente.
+- Imagen 2: peso sobre una cadera, ángulo lateral discreto y posición diferente del brazo y teléfono.
+- Imagen 3: otra postura natural con piernas, torso y cadera claramente distintos.
+
+FIDELIDAD DEL VESTUARIO:
+Cada imagen usa exclusivamente el look de su referencia correspondiente. Conserva tipo de prenda, color, estampado, patrón, forma, proporciones, corte, escote, mangas, tirantes, estructura de falda, short o pantalón, cintura y textura. No mezcles looks, cambies colores, rediseñes prendas ni simplifiques detalles.
+
+REALISMO Y RESTRICCIONES:
+Usa luz natural favorecedora. Mantén piel, cabello, manos, proporciones y pliegues realistas. Evita piel plástica, curvas exageradas, cintura irreal, manos o pies deformes, retoque excesivo y perfección facial artificial. No generes texto, subtítulos, emojis, interfaz de TikTok ni marcas de agua.
+
+Resultado final: exactamente tres imágenes 9:16 separadas. Misma mujer, apartamento, espejo, teléfono, iluminación y sesión. Un look y una pose natural diferente en cada imagen.</textarea>
+      </div>
+    </details>
+  </main>
+
+  <footer>Contenido original: Bruno Baker. Traducción y reorganización editorial en español para uso personal.</footer>
+
+  <script>
+    const status = document.getElementById('status');
+
+    async function copyText(text, sourceField) {
+      if (navigator.clipboard && window.isSecureContext) {
+        try {
+          await navigator.clipboard.writeText(text);
+          return true;
+        } catch (error) {
+          // Continúa con el método compatible con archivos locales.
+        }
+      }
+      const helper = sourceField || document.createElement('textarea');
+      if (!sourceField) {
+        helper.value = text;
+        helper.setAttribute('readonly', '');
+        helper.style.position = 'fixed';
+        helper.style.left = '-9999px';
+        document.body.appendChild(helper);
+      }
+      helper.focus();
+      helper.select();
+      helper.setSelectionRange(0, helper.value.length);
+      const copied = document.execCommand('copy');
+      if (!sourceField) helper.remove();
+      return copied;
+    }
+
+    document.querySelectorAll('[data-copy]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const field = document.getElementById(button.dataset.copy);
+        const copied = await copyText(field.value, field);
+        const previous = button.textContent;
+        button.textContent = copied ? 'Copiado ✓' : 'Seleccionado';
+        if (copied) button.classList.add('copied');
+        status.textContent = copied ? 'Prompt copiado al portapapeles.' : 'El texto quedó seleccionado; pulsa Ctrl+C.';
+        window.setTimeout(() => {
+          button.textContent = previous;
+          button.classList.remove('copied');
+          status.textContent = '';
+        }, 1800);
+      });
+    });
+
+    document.getElementById('copy-all').addEventListener('click', async (event) => {
+      const prompts = [...document.querySelectorAll('textarea')]
+        .map((field, index) => `PROMPT ${index + 1}\n${field.value}`)
+        .join('\n\n==============================\n\n');
+      const copied = await copyText(prompts);
+      const button = event.currentTarget;
+      button.textContent = copied ? 'Todos copiados ✓' : 'Seleccionados';
+      if (copied) button.classList.add('copied');
+      status.textContent = copied ? 'Los cinco prompts fueron copiados.' : 'Los prompts quedaron seleccionados; pulsa Ctrl+C.';
+      window.setTimeout(() => {
+        button.textContent = 'Copiar todos';
+        button.classList.remove('copied');
+        status.textContent = '';
+      }, 1800);
+    });
+  </script>
+</body>
+</html>
+
